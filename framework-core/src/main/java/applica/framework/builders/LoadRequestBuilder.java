@@ -23,6 +23,11 @@ public class LoadRequestBuilder extends LoadRequest {
         return this;
     }
 
+    public LoadRequestBuilder disableOwnershipQuery() {
+        setDisableOwnershipQuery(true);
+        return this;
+    }
+
     public LoadRequestBuilder like(String property, Object value) {
         if(value != null) {
             getFilters().add(new Filter(property, value, Filter.LIKE));

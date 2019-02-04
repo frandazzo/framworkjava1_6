@@ -59,6 +59,10 @@ public class SecureCrudStrategy extends ChainedCrudStrategy {
     public <T extends Entity> LoadResponse<T> find(LoadRequest loadRequest, Repository<T> repository) {
         checkAttributes();
 
+        if (loadRequest.isDisableOwnershipQuery())
+            return super.find(loadRequest, repository);
+
+
         if (SecureEntity.class.isAssignableFrom(repository.getEntityType())) {
             Filter filter = new Filter(getOwnerPropertyName(), getOwnerId());
             loadRequest.getFilters().add(filter);

@@ -14,10 +14,19 @@ import java.util.*;
 public class LoadRequest {
 
     private int page;
+    private boolean disableOwnershipQuery;
     private int rowsPerPage;
     private List<Sort> sorts = new ArrayList<>();
     private List<Filter> filters = new ArrayList<>();
     private Restriction restriction = null;
+
+    public boolean isDisableOwnershipQuery() {
+        return disableOwnershipQuery;
+    }
+
+    public void setDisableOwnershipQuery(boolean disableOwnershipQuery) {
+        this.disableOwnershipQuery = disableOwnershipQuery;
+    }
 
     public static LoadRequestBuilder build() {
         return new LoadRequestBuilder();
