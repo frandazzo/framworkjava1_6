@@ -10,7 +10,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -57,7 +59,8 @@ public class SimpleFileServer implements FileServer {
     }
 
     private void saveToServer(InputStream fileStream, String filename, String fullPath) throws IOException {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
+        //DefaultHttpClient httpClient = new DefaultHttpClient();
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost method = new HttpPost(fullPath);
         MultipartEntity entityRequest = new MultipartEntity();
         InputStreamBody streamBody = new InputStreamBody(fileStream, "");
@@ -69,6 +72,8 @@ public class SimpleFileServer implements FileServer {
             response = httpClient.execute(method);
         } catch (IOException e) {
             throw new IOException(e);
+        }finally{
+            httpClient.close();
         }
         int code = response.getStatusLine().getStatusCode();
 
